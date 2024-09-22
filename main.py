@@ -47,7 +47,8 @@ class Hero(pygame.sprite.Sprite):
             self.sprite_left.append(sp_cut.cut_sprite(self.x, self.y, w, h))  # Corrected sprite creation
             self.x += w
             self.sprite_right.append(pygame.transform.flip(self.sprite_left[-1], True, False))
-
+        self.speed_y = 0
+        self.gravity = 0.5
     def get_current_sprite(self):
         if self.direction == 'right':
             return self.sprite_right[self.sprite_index % 4]
@@ -77,12 +78,42 @@ class Hero(pygame.sprite.Sprite):
             else:
                 self.sprite_index += 1
             self.direction = 'right'    
-
-
+        if keys[pygame.K_SPACE]:
+            self.speed_y = -10
+        
+        self.speed_y += self.gravity
+        self.y += self.speed_y
+    
     def draw(self, screen):
         current_sprite = self.get_current_sprite()
         screen.blit(current_sprite, (self.x, self.y))
+    # Inside the Hero class
     
+    
+    def update_position(self, keys):
+        speed = 8  # Adjust the speed as needed
+        if keys[pygame.K_w] and self.y > 0:  # Move up and check top boundary
+            self.y -= speed
+            self.sprite_index += 1
+        if keys[pygame.K_a] and self.x > 0:  # Move left and check left boundary
+            self.x -= speed
+            if self.direction == 'right':
+                self.sprite_index = 0
+            else:
+                self.sprite_index += 1
+            self.direction = 'left'
+        if keys[pygame.K_s] and self.y < 466 - 50:  # Move down and check bottom boundary
+            self.y += speed
+            self.sprite_index += 1
+        if keys[pygame.K_d] and self.x < 700 - 35:  # Move right and check right boundary
+            self.x += speed
+            if self.direction == 'left':
+                self.sprite_index = 0
+            else:
+                self.sprite_index += 1
+            self.direction = 'right'
+            
+
 hero = Hero()
 while running:
     for event in pygame.event.get():
