@@ -15,7 +15,7 @@ pygame.mixer.music.set_volume(0.1)
 window = pygame.display.set_mode((700, 500))
 pygame.display.set_caption("Game")
 clock = pygame.time.Clock()
-FPS = 60
+FPS = 20
 
 # Load the image
 wall_image = pygame.image.load('images/wall.png')
@@ -39,37 +39,45 @@ class Hero(pygame.sprite.Sprite):
         self.sprite_right = []
         self.sprite_left = []
         self.direction = 'right'  # Initial direction
-        self.x, self.y = 0, 0  # Corrected variable assignment
+        self.x, self.y = 6, 0  # Corrected variable assignment
+        self.sprite_index = 0
         h = 50
-        w = 40
+        w = 35
         for i in range(4):
-            self.sprite_right.append(sp_cut.cut_sprite(self.x, self.y, w, h))  # Corrected sprite creation
+            self.sprite_left.append(sp_cut.cut_sprite(self.x, self.y, w, h))  # Corrected sprite creation
             self.x += w
-            self.sprite_left.append(pygame.transform.flip(self.sprite_right[-1], True, False))
-    
-    def update_direction(self, direction):
-        if direction == 'right':
-            self.direction = 'right'
-        elif direction == 'left':
-            self.direction = 'left'
-    
+            self.sprite_right.append(pygame.transform.flip(self.sprite_left[-1], True, False))
+
     def get_current_sprite(self):
         if self.direction == 'right':
-            return self.sprite_right[0]
+            return self.sprite_right[self.sprite_index % 4]
         elif self.direction == 'left':
-            return self.sprite_left[0]
+            return self.sprite_left[self.sprite_index % 4]
     
     # Inside the Hero class
     def update_position(self, keys):
-        speed = 5  # Adjust the speed as needed
+        speed = 8  # Adjust the speed as needed
         if keys[pygame.K_w]:  # Move up
             self.y -= speed
+            self.sprite_index += 1
         if keys[pygame.K_a]:  # Move left
             self.x -= speed
+            if self.direction == 'right':
+                self.sprite_index = 0
+            else:
+                self.sprite_index += 1
+            self.direction = 'left'
         if keys[pygame.K_s]:  # Move down
             self.y += speed
+            self.sprite_index += 1
         if keys[pygame.K_d]:  # Move right
             self.x += speed
+            if self.direction == 'left':
+                self.sprite_index = 0
+            else:
+                self.sprite_index += 1
+            self.direction = 'right'    
+
 
     def draw(self, screen):
         current_sprite = self.get_current_sprite()
