@@ -89,7 +89,11 @@ class Hero(pygame.sprite.Sprite):
                 self.sprite_index += 1
             self.direction = 'right'
         self.y += self.gravity
-
+    
+    def check_collision(self, other_sprite):
+        if self.rect.colliderect(wall_rect):
+           
+            pass
 hero = Hero()
 while running:
     for event in pygame.event.get():
