@@ -37,6 +37,8 @@ class SpriteCutter:
 class Hero(pygame.sprite.Sprite):
 
     def __init__(self):
+        g = 3
+        y = 0
         # Corrected the path separator
         sp_cut = SpriteCutter('images/mario.png')
         self.sprite_right = []
@@ -46,6 +48,7 @@ class Hero(pygame.sprite.Sprite):
         self.sprite_index = 0
         h = 50
         w = 35
+        
         for i in range(4):
             self.sprite_left.append(sp_cut.cut_sprite(
                 self.x, self.y, w, h))  # Corrected sprite creation
@@ -54,7 +57,8 @@ class Hero(pygame.sprite.Sprite):
                 self.sprite_left[-1], True, False))
         self.speed_y = 0
         self.gravity = 4
-
+        self.speed_y += g
+        self.y += self.speed_y
     def get_current_sprite(self):
         if self.direction == 'right':
             return self.sprite_right[self.sprite_index % 4]
@@ -93,6 +97,7 @@ class Hero(pygame.sprite.Sprite):
             self.gravity = 0
         else:
             self.gravity = 4
+        
     
     def check_collision(self):
         current_sprite = self.get_current_sprite()
