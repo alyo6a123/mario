@@ -53,7 +53,7 @@ class Hero(pygame.sprite.Sprite):
             self.sprite_right.append(pygame.transform.flip(
                 self.sprite_left[-1], True, False))
         self.speed_y = 0
-        self.gravity = 0.5
+        self.gravity = 4
 
     def get_current_sprite(self):
         if self.direction == 'right':
@@ -89,11 +89,19 @@ class Hero(pygame.sprite.Sprite):
                 self.sprite_index += 1
             self.direction = 'right'
         self.y += self.gravity
+        if self.check_collision():
+            self.gravity = 0
+        else:
+            self.gravity = 4
     
-    def check_collision(self, other_sprite):
-        if self.rect.colliderect(wall_rect):
-           
-            pass
+    def check_collision(self):
+        current_sprite = self.get_current_sprite()
+        rect = current_sprite.get_rect()
+        rect.x, rect.y = self.x, self.y
+        if rect.colliderect(wall_rect):
+            return True
+        return False
+        
 hero = Hero()
 while running:
     for event in pygame.event.get():
