@@ -23,6 +23,7 @@ wall_rect = wall_image.get_rect()
 wall_rect.bottom = 500  # Set the bottom of the image to the bottom of the screen
 
 wall2_image = pygame.image.load('images/wall2.png')
+wall2_image = pygame.transform.scale(wall2_image, (100, 40))
 wall2_rect = wall_image.get_rect()
 wall2_rect.bottom = 420
 
