@@ -24,6 +24,12 @@ wall_rect.bottom = 500  # Set the bottom of the image to the bottom of the scree
 
 running = True
 
+# Создать флаг в классе, который отвечает в воздухе герой или нет
+# Если нажат прожок и герой не в воздухе, то прыгаем двигаемся вверх и устанавливаем флаг в True
+# Движение вверх - резкое прибавление высоты
+# Если флаг в True, то двигаемся вниз и уменьшаем значение скорости
+
+
 
 class SpriteCutter:
     def __init__(self, image_path):
@@ -72,9 +78,6 @@ class Hero(pygame.sprite.Sprite):
 
     def update_position(self, keys):
         speed = 8  # Adjust the speed as needed
-        if keys[pygame.K_w] and self.y > 0:  # Move up and check top boundary
-            self.y -= speed
-            self.sprite_index += 1
         if keys[pygame.K_a] and self.x > 0:  # Move left and check left boundary
             self.x -= speed
             if self.direction == 'right':
