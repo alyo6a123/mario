@@ -49,21 +49,10 @@ class Hero(pygame.sprite.Sprite):
         self.direction = 'right'  # Initial direction
         self.x, self.y = 6, 0  # Corrected variable assignment
         self.sprite_index = 0
-        self.islnAir = False
+        self.in_air = False
         
-    def jump(self):
-        if not self.islnAir:
-            self.islnAir = True
-            self.move_up()
-    def move_up(self):
-        self.y += 10
-    def land(self):
-        if self.islnAir:
-            self.islnAir = False
-            self.y = 0 
         h = 50
         w = 35
-        
         for i in range(4):
             self.sprite_left.append(sp_cut.cut_sprite(
                 self.x, self.y, w, h))  # Corrected sprite creation
@@ -71,6 +60,13 @@ class Hero(pygame.sprite.Sprite):
             self.sprite_right.append(pygame.transform.flip(
                 self.sprite_left[-1], True, False))  
         self.gravity = 4
+        self.x, self.y = 6, 400  # Corrected variable assignment
+
+    def jump(self):
+        if not self.in_air:
+            self.islnAir = True
+            self.y -= 10    
+
     def get_current_sprite(self):
         if self.direction == 'right':
             return self.sprite_right[self.sprite_index % 4]
@@ -101,7 +97,10 @@ class Hero(pygame.sprite.Sprite):
             else:
                 self.sprite_index += 1
             self.direction = 'right'
-            self.y += self.gravity
+        if keys[pygame.K_SPACE]:
+            self.jump()
+
+        self.y += self.gravity
         if self.check_collision():
             self.gravity = 0
         else:
