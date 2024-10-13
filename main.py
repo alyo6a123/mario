@@ -16,7 +16,7 @@ window = pygame.display.set_mode((700, 500))
 pygame.display.set_caption("Game")
 clock = pygame.time.Clock()
 FPS = 20
-
+g = 0.2
 # Load the image
 wall_image = pygame.image.load('images/wall.png')
 wall_rect = wall_image.get_rect()
@@ -35,10 +35,7 @@ class SpriteCutter:
 
 
 class Hero(pygame.sprite.Sprite):
-
     def __init__(self):
-        g = 3
-        y = 0
         # Corrected the path separator
         sp_cut = SpriteCutter('images/mario.png')
         self.sprite_right = []
@@ -46,6 +43,18 @@ class Hero(pygame.sprite.Sprite):
         self.direction = 'right'  # Initial direction
         self.x, self.y = 6, 0  # Corrected variable assignment
         self.sprite_index = 0
+        self.islnAir = False
+        
+    def jump(self):
+        if not self.islnAir:
+            self.islnAir = True
+            self.move_up()
+    def move_up(self):
+        self.y += 10
+    def land(self):
+        if self.islnAir:
+            self.islnAir = False
+            self.y = 0 
         h = 50
         w = 35
         
@@ -54,11 +63,8 @@ class Hero(pygame.sprite.Sprite):
                 self.x, self.y, w, h))  # Corrected sprite creation
             self.x += w
             self.sprite_right.append(pygame.transform.flip(
-                self.sprite_left[-1], True, False))
-        self.speed_y = 0
+                self.sprite_left[-1], True, False))  
         self.gravity = 4
-        self.speed_y += g
-        self.y += self.speed_y
     def get_current_sprite(self):
         if self.direction == 'right':
             return self.sprite_right[self.sprite_index % 4]
@@ -72,9 +78,6 @@ class Hero(pygame.sprite.Sprite):
 
     def update_position(self, keys):
         speed = 8  # Adjust the speed as needed
-        if keys[pygame.K_w] and self.y > 0:  # Move up and check top boundary
-            self.y -= speed
-            self.sprite_index += 1
         if keys[pygame.K_a] and self.x > 0:  # Move left and check left boundary
             self.x -= speed
             if self.direction == 'right':
@@ -92,11 +95,11 @@ class Hero(pygame.sprite.Sprite):
             else:
                 self.sprite_index += 1
             self.direction = 'right'
-        self.y += self.gravity
+            self.y += self.gravity
         if self.check_collision():
             self.gravity = 0
         else:
-            self.gravity = 4
+            self.gravity += g
         
     
     def check_collision(self):
