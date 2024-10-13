@@ -22,6 +22,10 @@ wall_image = pygame.image.load('images/wall.png')
 wall_rect = wall_image.get_rect()
 wall_rect.bottom = 500  # Set the bottom of the image to the bottom of the screen
 
+wall2_image = pygame.image.load('images/wall2.png')
+wall2_rect = wall_image.get_rect()
+wall2_rect.bottom = 420
+
 running = True
 
 # Создать флаг в классе, который отвечает в воздухе герой или нет
@@ -65,7 +69,7 @@ class Hero(pygame.sprite.Sprite):
     def jump(self):
         if not self.in_air:
             self.islnAir = True
-            self.y -= 10    
+            self.y -= 5
 
     def get_current_sprite(self):
         if self.direction == 'right':
@@ -127,7 +131,7 @@ while running:
     window.fill((0, 0, 0))
     # Blit the image onto the screen
     window.blit(wall_image, wall_rect)
-
+    window.blit(wall2_image, wall2_rect)
     # Draw the 'mario.png' sprite
     hero.draw(window)
 
