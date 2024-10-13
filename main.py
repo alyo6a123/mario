@@ -24,6 +24,12 @@ wall_rect.bottom = 500  # Set the bottom of the image to the bottom of the scree
 
 running = True
 
+# Создать флаг в классе, который отвечает в воздухе герой или нет
+# Если нажат прожок и герой не в воздухе, то прыгаем двигаемся вверх и устанавливаем флаг в True
+# Движение вверх - резкое прибавление высоты
+# Если флаг в True, то двигаемся вниз и уменьшаем значение скорости
+
+
 
 class SpriteCutter:
     def __init__(self, image_path):
