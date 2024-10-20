@@ -54,12 +54,12 @@ class Hero(pygame.sprite.Sprite):
         self.sprite_index = 0
         self.in_air = False
         
-        h = 50
-        w = 35
+        self.h = 50
+        self.w = 35
         for i in range(4):
             self.sprite_left.append(sp_cut.cut_sprite(
-                self.x, self.y, w, h))  # Corrected sprite creation
-            self.x += w
+                self.x, self.y, self.w, self.h))  # Corrected sprite creation
+            self.x += self.w
             self.sprite_right.append(pygame.transform.flip(
                 self.sprite_left[-1], True, False))  
         self.gravity = 4
@@ -83,9 +83,8 @@ class Hero(pygame.sprite.Sprite):
 
     def update_position(self, keys):
         speed = 8  # Adjust the speed as needed
-        self.rect.colliderect(platfrom1.rect)
-        print(self.rect.colliderect)
-        
+        rect = pygame.Rect(self.x, self.y, self.w, self.h)
+        collided = rect.colliderect(platfrom1.rect)
         
         if keys[pygame.K_a] and self.x > 0:  # Move left and check left boundary
             self.x -= speed
