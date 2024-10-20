@@ -83,6 +83,10 @@ class Hero(pygame.sprite.Sprite):
 
     def update_position(self, keys):
         speed = 8  # Adjust the speed as needed
+        self.rect.colliderect(platfrom1.rect)
+        print(self.rect.colliderect)
+        
+        
         if keys[pygame.K_a] and self.x > 0:  # Move left and check left boundary
             self.x -= speed
             if self.direction == 'right':
@@ -124,10 +128,10 @@ class Platfrom:
         self.image = pygame.image.load(image_path)
         self.image = pygame.transform.scale(self.image, (w, h))
         self.rect = self.image.get_rect(topleft=(x, y))
-
+        
     def draw(self, screen):
         screen.blit(self.image, self.rect)
-
+    
 
 platfrom1 = Platfrom('images/wall2.png', 200, 350, 100, 40)
 platfrom2 = Platfrom('images/wall3.png', 100, 400, 100, 40)
