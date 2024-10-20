@@ -17,15 +17,12 @@ pygame.display.set_caption("Game")
 clock = pygame.time.Clock()
 FPS = 20
 g = 0.2
+
 # Load the image
 wall_image = pygame.image.load('images/wall.png')
 wall_rect = wall_image.get_rect()
 wall_rect.bottom = 500  # Set the bottom of the image to the bottom of the screen
 
-wall2_image = pygame.image.load('images/wall2.png')
-wall2_image = pygame.transform.scale(wall2_image, (100, 40))
-wall2_rect = wall_image.get_rect()
-wall2_rect.bottom = 420
 
 running = True
 
@@ -43,6 +40,7 @@ class SpriteCutter:
     def cut_sprite(self, x, y, width, height):
         sprite = self.image.subsurface(pygame.Rect(x, y, width, height))
         return sprite
+
 
 
 class Hero(pygame.sprite.Sprite):
@@ -70,7 +68,7 @@ class Hero(pygame.sprite.Sprite):
     def jump(self):
         if not self.in_air:
             self.islnAir = True
-            self.y -= 5
+            self.y -= 6
 
     def get_current_sprite(self):
         if self.direction == 'right':
@@ -119,8 +117,26 @@ class Hero(pygame.sprite.Sprite):
         if rect.colliderect(wall_rect):
             return True
         return False
-        
+class Wall:
+    def __init__(self, image_path, x, y):
+        self.image = pygame.image.load(image_path)
+        self.rect = self.image.get_rect(topleft=(x, y))
+
+    def draw(self, screen):
+        screen.blit(self.image, self.rect)
+
+wall2 = Wall('images/wall2.png', 200, 350)
+wall2_image = pygame.transform.scale(wall2.image, (100, 40))
+wall2_rect = wall_image.get_rect()
+wall2_rect.bottom = 420
+
+wall3 = Wall('images/wall3.png', 100, 400)
+wall3_image = pygame.transform.scale(wall3.image, (100, 40))        
+wall3_rect = wall_image.get_rect()
+wall3_rect.bottom = 200
+
 hero = Hero()
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -132,7 +148,8 @@ while running:
     window.fill((0, 0, 0))
     # Blit the image onto the screen
     window.blit(wall_image, wall_rect)
-    window.blit(wall2_image, wall2_rect)
+    wall2.draw(window)
+    wall3.draw(window)
     # Draw the 'mario.png' sprite
     hero.draw(window)
 
