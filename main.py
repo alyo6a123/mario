@@ -117,23 +117,20 @@ class Hero(pygame.sprite.Sprite):
         if rect.colliderect(wall_rect):
             return True
         return False
-class Wall:
-    def __init__(self, image_path, x, y):
+
+
+class Platfrom:
+    def __init__(self, image_path, x, y, w, h):
         self.image = pygame.image.load(image_path)
+        self.image = pygame.transform.scale(self.image, (w, h))
         self.rect = self.image.get_rect(topleft=(x, y))
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
 
-wall2 = Wall('images/wall2.png', 200, 350)
-wall2_image = pygame.transform.scale(wall2.image, (100, 40))
-wall2_rect = wall_image.get_rect()
-wall2_rect.bottom = 420
 
-wall3 = Wall('images/wall3.png', 100, 400)
-wall3_image = pygame.transform.scale(wall3.image, (100, 40))        
-wall3_rect = wall_image.get_rect()
-wall3_rect.bottom = 200
+platfrom1 = Platfrom('images/wall2.png', 200, 350, 100, 40)
+platfrom2 = Platfrom('images/wall3.png', 100, 400, 100, 40)
 
 hero = Hero()
 
@@ -148,8 +145,8 @@ while running:
     window.fill((0, 0, 0))
     # Blit the image onto the screen
     window.blit(wall_image, wall_rect)
-    wall2.draw(window)
-    wall3.draw(window)
+    platfrom1.draw(window)
+    platfrom2.draw(window)
     # Draw the 'mario.png' sprite
     hero.draw(window)
 
